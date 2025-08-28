@@ -1,13 +1,11 @@
-import { Request } from 'express';
-
+import { Request } from "express";
 
 export interface CustomRequest<
   P = any,
   ResBody = any,
   ReqBody = any,
-  ReqQuery = any
+  ReqQuery = any,
 > extends Request<P, ResBody, ReqBody, ReqQuery> {
-//   user: IAuth;
+  //   user: IAuth;
   authorization: string[];
-
 }
