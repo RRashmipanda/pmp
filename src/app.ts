@@ -3,16 +3,12 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import helmet from "helmet";
+import expressMongoSanitize from 'express-mongo-sanitize';
 import morgan from "morgan";
 import hpp from "hpp";
 import rateLimit from "express-rate-limit";
-// import userRoute from "./routes/user.route.js";
-// import courseRoute from "./routes/course.route.js";
-// import mediaRoute from "./routes/media.route.js";
-// import purchaseRoute from "./routes/purchaseCourse.route.js";
-// import courseProgressRoute from "./routes/courseProgress.route.js";
-// import razorpayRoute from "./routes/razorpay.routes.js";
-// import healthRoute from "./routes/health.routes.js";
+import { ErrorRequestHandler } from "express";
+
 
 // Load environment variables
 dotenv.config();
@@ -29,8 +25,7 @@ const limiter = rateLimit({
 
 // Security Middleware
 app.use(helmet()); // Set security HTTP headers
-// app.use(mongoSanitize()); // Data sanitization against NoSQL query injection
-// app.use(xss()); // Data sanitization against XSS
+app.use(expressMongoSanitize()); // Data sanitization against NoSQL query injection
 app.use(hpp()); // Prevent HTTP Parameter Pollution
 app.use("/api", limiter); // Apply rate limiting to all routes
 
@@ -62,32 +57,22 @@ app.use(
   })
 );
 
-// API Routes
-// app.use("/api/v1/media", mediaRoute);
-// app.use("/api/v1/user", userRoute);
-// app.use("/api/v1/course", courseRoute);
-// app.use("/api/v1/purchase", purchaseRoute);
-// app.use("/api/v1/progress", courseProgressRoute);
-// app.use("/api/v1/razorpay", razorpayRoute);
-// app.use("/health", healthRoute);
 
-// 404 Handler
-app.use((req, res) => {
-  res.status(404).json({
-    status: "error",
-    message: "Route not found",
-  });
-});
 
 // Global Error Handler.
-// app.use((err, req, res, next) => {
-//   console.error(err);
-//   return res.status(err.statusCode || 500).json({
-//     status: "error",
-//     message: err.message || "Internal server error",
-//     ...(process.env.NODE_ENV === "development" && { stack: err.stack }),
-//   });
-// });
+const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
+  console.error(err);
+  return res.status(err.statusCode || 500).json({
+    status: "error",
+    message: err.message || "Internal server error",
+    ...(process.env.NODE_ENV === "development" && { stack: err.stack }),
+  });
+};
+app.use(errorHandler);
+
+
+// Mount routes
+// app.use('/api/v1', allRoutes);
 
 
 app.get("/", (req, res) => {
@@ -95,4 +80,7 @@ app.get("/", (req, res) => {
 });
 
 
+
 export default app;
+
+
