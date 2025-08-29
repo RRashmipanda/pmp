@@ -1,45 +1,21 @@
-import express, { Application, Request, Response } from "express";
 import dotenv from "dotenv";
-import morgan from "morgan";
-import cors from "cors";
-import helmet from "helmet";
-import cookieParser from "cookie-parser";
-import mongoSanitize from "express-mongo-sanitize";
-import rateLimit from "express-rate-limit";
-import hpp from "hpp";
+import app from "./app";
+import connectDB from "../src/db/index";
 
-dotenv.config();
-const app = express();
+dotenv.config({
+  path: "./.env",
+});
+
 const PORT = process.env.PORT || 8080;
 
-// Middleware
-app.use(express.json());
-app.use(
-  cors({
-    origin: process.env.CLIENT_ORIGIN || "http://localhost:3000",
-    credentials: true,
-  }),
-);
+connectDB()
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`PMP listening on port http://localhost:${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error("MongoDB connection error", err);
+    process.exit(1);
+  });
 
-app.use(helmet());
-app.use(cookieParser());
-app.use(morgan("dev"));
-app.use(mongoSanitize());
-app.use(hpp());
-app.use(
-  rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 100,
-    message:
-      "Too many requests from this IP, please try again after 15 minutes.",
-  }),
-);
-
-// Test route
-app.get("/", (req: Request, res: Response) => {
-  res.send(" Project Management System API running with TypeScript!");
-});
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT} `);
-});
