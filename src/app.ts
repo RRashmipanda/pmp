@@ -3,11 +3,12 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import helmet from "helmet";
-import expressMongoSanitize from 'express-mongo-sanitize';
+
 import morgan from "morgan";
 import hpp from "hpp";
 import rateLimit from "express-rate-limit";
 import { ErrorRequestHandler } from "express";
+import allRoutes from "./routes";
 
 
 // Load environment variables
@@ -25,7 +26,6 @@ const limiter = rateLimit({
 
 // Security Middleware
 app.use(helmet()); // Set security HTTP headers
-app.use(expressMongoSanitize()); // Data sanitization against NoSQL query injection
 app.use(hpp()); // Prevent HTTP Parameter Pollution
 app.use("/api", limiter); // Apply rate limiting to all routes
 
@@ -72,7 +72,7 @@ app.use(errorHandler);
 
 
 // Mount routes
-// app.use('/api/v1', allRoutes);
+app.use('/api/v1', allRoutes);
 
 
 app.get("/", (req, res) => {
