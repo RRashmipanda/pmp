@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document, Model } from "mongoose";
+import mongoose, { Schema, Document } from "mongoose";
 // import bcrypt from "bcrypt";
 // import jwt from "jsonwebtoken";
 // import crypto from "crypto";
@@ -23,8 +23,7 @@ export interface IUser extends Document {
 //   comparePassword(candidatePassword: string): Promise<boolean>;
 }
 
-
-const userSchema: Schema<IUser> = new Schema(
+const userSchema= new Schema<IUser> (
   {
     avatar: {
       type: {
@@ -101,6 +100,6 @@ const userSchema: Schema<IUser> = new Schema(
 //   return await bcrypt.compare(candidatePassword, this.password);
 // };
 
-export default  mongoose.Model<IUser>("AuthUser", userSchema);
-// export default model<ICategory>('MagazineCategory', MagazineCategorySchema);
-// export default mongoose.model<IEdition>('LocationEdition', EditionSchema);
+export default  mongoose.model<IUser>("AuthUser", userSchema);
+
+
