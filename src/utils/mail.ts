@@ -1,47 +1,47 @@
 import Mailgen from "mailgen";
-// import nodemailer from "nodemailer";
-
+import nodemailer from "nodemailer";
+import { ENV } from "../config/env";
 
 //sending mail
-// const sendEmail = async (options) => {
-//   const mailGenerator = new Mailgen({
-//     theme: "default",
-//     product: {
-//       name: "Task Manager",
-//       link: "https://taskmanagelink.com",
-//     },
-//   });
+const sendEmail = async (options: any) => {
+  const mailGenerator = new Mailgen({
+    theme: "default",
+    product: {
+      name: "Task Manager",
+      link: "https://taskmanagelink.com",
+    },
+  });
 
-//   const emailTextual = mailGenerator.generatePlaintext(options.mailgenContent);
+  const emailTextual = mailGenerator.generatePlaintext(options.mailgenContent);
 
-//   const emailHtml = mailGenerator.generate(options.mailgenContent);
+  const emailHtml = mailGenerator.generate(options.mailgenContent);
 
-//   const transporter = nodemailer.createTransport({
-//     host: process.env.MAILTRAP_SMTP_HOST,
-//     port: process.env.MAILTRAP_SMTP_PORT,
-//     auth: {
-//       user: process.env.MAILTRAP_SMTP_USER,
-//       pass: process.env.MAILTRAP_SMTP_PASS,
-//     },
-//   });
+  const transporter = nodemailer.createTransport({
+  host: ENV.SMTP_HOST,
+  port: ENV.SMTP_PORT,
+  auth: {
+    user: ENV.SMTP_USER,
+    pass: ENV.SMTP_PASS,
+  },
+  });
 
-//   const mail = {
-//     from: "mail.taskmanager@example.com",
-//     to: options.email,
-//     subject: options.subject,
-//     text: emailTextual,
-//     html: emailHtml,
-//   };
+  const mail = {
+    from: "mail.taskmanager@example.com",
+    to: options.email,
+    subject: options.subject,
+    text: emailTextual,
+    html: emailHtml,
+  };
 
-//   try {
-//     await transporter.sendMail(mail);
-//   } catch (error) {
-//     console.error(
-//       "Email service failed siliently. Make sure that you have provided your MAILTRAP credentials in the .env file",
-//     );
-//     console.error("Error: ", error);
-//   }
-// };
+  try {
+    await transporter.sendMail(mail);
+  } catch (error) {
+    console.error(
+      "Email service failed siliently. Make sure that you have provided your MAILTRAP credentials in the .env file",
+    );
+    console.error("Error: ", error);
+  }
+};
 
 
 //generate mail
@@ -88,5 +88,5 @@ const forgotPasswordMailgenContent = (username:string, passwordResetUrl:string) 
 export {
   emailVerificationMailgenContent,
   forgotPasswordMailgenContent,
-//   sendEmail,
+  sendEmail
 };

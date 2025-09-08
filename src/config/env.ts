@@ -16,4 +16,9 @@ export const ENV = {
   ACCESS_TOKEN_EXPIRY: getEnv("ACCESS_TOKEN_EXPIRY", "1d") as SignOptions["expiresIn"],
   REFRESH_TOKEN_EXPIRY: getEnv("REFRESH_TOKEN_EXPIRY", "7d") as SignOptions["expiresIn"],
   CLIENT_URL: getEnv("CLIENT_URL", "http://localhost:5173"),
+
+  SMTP_HOST: getEnv("SMTP_HOST"),
+  SMTP_PORT: parseInt(getEnv("SMTP_PORT", "587"), 10),
+  SMTP_USER: getEnv("SMTP_USER"),
+  SMTP_PASS: getEnv("SMTP_PASS"),
 };
