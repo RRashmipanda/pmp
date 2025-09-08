@@ -1,5 +1,7 @@
 import { Router } from 'express';
-import healthCheckRoutes from "../src/modules/health-check/healthcheck.routes"
+import healthCheckRoutes from "../src/modules/health-check/healthcheck.routes";
+import authuserRoutes from "../src/modules/auth-user/auth-user.routes";
+
 
 const router = Router();
 
@@ -8,5 +10,6 @@ router.get('/', (req, res) => {
 });
 
 router.use('/healthcheck',healthCheckRoutes);
-//router.use('/cla', Routes); 
+router.use('/auth', authuserRoutes); 
+
 export default router;
