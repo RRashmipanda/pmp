@@ -1,3 +1,10 @@
+import dotenv from "dotenv";
+import path from "path";
+
+// load env before anything else
+dotenv.config({ path: path.resolve(__dirname, "../../.env") });
+
+
 import { SignOptions } from "jsonwebtoken";
 
 function getEnv(key: string, fallback?: string): string {
