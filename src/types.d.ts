@@ -1,5 +1,5 @@
 import { Request } from "express";
-
+import  {IUser}  from "../modules/auth-user/auth-type";
 
 
 declare global {
@@ -9,6 +9,14 @@ declare global {
       PORT?: string;
       ACCESS_TOKEN_SECRET:string;
       REFRESH_TOKEN_SECRET:string;
+    }
+  }
+}
+
+declare global {
+  namespace Express {
+    interface Request {
+      user?: IUser;  
     }
   }
 }
