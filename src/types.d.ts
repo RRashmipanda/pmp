@@ -1,22 +1,19 @@
 import { Request } from "express";
-import  {IUser}  from "../modules/auth-user/auth-type";
+import { IUser } from "../modules/auth-user/auth-type";
 
-
-declare global {
+export declare global {
   namespace NodeJS {
     interface ProcessEnv {
       MONGO_URI: string;
       PORT?: string;
-      ACCESS_TOKEN_SECRET:string;
-      REFRESH_TOKEN_SECRET:string;
+      ACCESS_TOKEN_SECRET: string;
+      REFRESH_TOKEN_SECRET: string;
     }
   }
-}
 
-declare global {
-  namespace Express {
+  export namespace Express {
     interface Request {
-      user?: IUser;  
+      user?: IUser & { _id: string };
     }
   }
 }
@@ -28,16 +25,15 @@ export interface IApiError {
   stack?: string;
 }
 
+
 export interface CustomRequest<
   P = any,
   ResBody = any,
   ReqBody = any,
   ReqQuery = any,
 > extends Request<P, ResBody, ReqBody, ReqQuery> {
-  //   user: IAuth;
   authorization: string[];
+  user?: IUser & { _id: string };
 }
 
 export {};
-
-

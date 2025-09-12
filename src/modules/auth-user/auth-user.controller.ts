@@ -15,8 +15,9 @@ import { emailVerificationMailgenContent, forgotPasswordMailgenContent, sendEmai
 import { Types } from "mongoose";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
-
-
+import { ENV } from "../../config/env";
+import { CustomRequest } from "../../types";
+import { Response } from "express";
 
 const generateAccessAndRefreshTokens = async (userId: Types.ObjectId | string) => {
   try {
@@ -178,13 +179,18 @@ export const logoutUser = AsyncHandler(async (req, res) => {
     .json(new ApiResponse(200, {}, "User logged out"));
 });
 
-//get Current User
-export const getCurrentUser = AsyncHandler(async (req, res) => {
-  return res
-    .status(200)
-    .json(new ApiResponse(200, req.user, "Current user fetched successfully"));
-});
 
+//get Current User
+export const getCurrentUser = async (req: CustomRequest, res: Response) => {
+  if (!req.user) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+
+  return res.status(200).json({
+    success: true,
+    data: req.user,
+  });
+};
 
 //Verify Email
 export const verifyEmail = AsyncHandler(async (req, res) => {
@@ -271,7 +277,7 @@ export const refreshAccessToken = AsyncHandler(async (req, res) => {
   try {
     const decodedToken = jwt.verify(
       incomingRefreshToken,
-      process.env.REFRESH_TOKEN_SECRET,
+      ENV.REFRESH_TOKEN_SECRET,
     );
 
     const userId =
@@ -390,6 +396,7 @@ export const resetForgotPassword = AsyncHandler(async (req, res) => {
 
 //change current password
 export const changeCurrentPassword = AsyncHandler(async (req, res) => {
+
   const { oldPassword, newPassword } = req.body;
 
   const user = await User.findById(req.user?._id);
