@@ -12,13 +12,4 @@ router.get("/login",userLoginValidator(), validate, controller.login);
 
 
 
-
-
-
-
-
-
-
-
-
 export default router;
