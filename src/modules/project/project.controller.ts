@@ -10,7 +10,7 @@ import { AvailableUserRole, UserRolesEnum } from "../../utils/constants";
 
 
 
-// const getProjects = asyncHandler(async (req, res) => {
+// const getProjects = AsyncHandler(async (req, res) => {
 //   const projects = await ProjectMember.aggregate([
 //     {
 //       $match: {
@@ -79,7 +79,7 @@ import { AvailableUserRole, UserRolesEnum } from "../../utils/constants";
 //     .json(new ApiResponse(200, project, "Project fetched successfully"));
 // });
 
-// const createProject = asyncHandler(async (req, res) => {
+// export const createProject = AsyncHandler(async (req, res) => {
 //   const { name, description } = req.body;
 
 //   const project = await Project.create({
