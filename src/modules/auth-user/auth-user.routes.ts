@@ -8,6 +8,9 @@ const router = Router();
 
 router.post("/register",userRegisterValidator(),validate,controller.registerUser);
 router.get("/login",userLoginValidator(), validate, controller.login);
+router.get("/logout",controller.logoutUser);
+router.get("/me", controller.getCurrentUser);
+
 
 
 

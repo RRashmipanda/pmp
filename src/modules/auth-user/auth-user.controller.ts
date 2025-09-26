@@ -181,7 +181,7 @@ export const logoutUser = AsyncHandler(async (req, res) => {
 
 
 //get Current User
-export const getCurrentUser = async (req: CustomRequest, res: Response) => {
+export const getCurrentUser = AsyncHandler(async (req, res) => {
   if (!req.user) {
     return res.status(401).json({ message: "Unauthorized" });
   }
@@ -190,7 +190,8 @@ export const getCurrentUser = async (req: CustomRequest, res: Response) => {
     success: true,
     data: req.user,
   });
-};
+})
+
 
 //Verify Email
 export const verifyEmail = AsyncHandler(async (req, res) => {
