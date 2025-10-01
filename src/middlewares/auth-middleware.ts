@@ -1,3 +1,4 @@
+import { Request, Response, NextFunction } from "express";
 import  User from "../modules/auth-user/auth-user.model";
 import { ProjectMember } from "../../src/modules/project/projectMember.model";
 import { ApiError } from "../utils/api-error.js";
@@ -36,32 +37,32 @@ export const verifyJWT = AsyncHandler(async (req, res, next) => {
   }
 });
 
-
 export const validateProjectPermission = (roles: string[] = []) => {
-  AsyncHandler(async (req, res, next) => {
+  return AsyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     const { projectId } = req.params;
 
     if (!projectId) {
-      throw new ApiError(400, "project id is missing");
+      throw new ApiError(400, "Project ID is missing");
     }
 
-    const project = await ProjectMember.findOne({
+    const projectMember = await ProjectMember.findOne({
       project: new mongoose.Types.ObjectId(projectId),
       user: new mongoose.Types.ObjectId(req.user._id),
     });
 
-    if (!project) {
-      throw new ApiError(400, "project not found");
+    if (!projectMember) {
+      throw new ApiError(404, "Project not found or you are not a member");
     }
 
-    const givenRole = project?.role;
+    const givenRole = projectMember.role;
 
-    req.user.role = givenRole;
+    // attach project role to the user object for downstream use
+    (req.user as any).role = givenRole;
 
     if (!roles.includes(givenRole)) {
       throw new ApiError(
         403,
-        "You do not have permission to perform this action",
+        "You do not have permission to perform this action"
       );
     }
 

@@ -21,7 +21,6 @@ router.post("/change-password",userChangeCurrentPasswordValidator(),validate,con
 router.post("/resend-email-verification",controller.resendEmailVerification);
 
 
-// export default router;
 
 
 
