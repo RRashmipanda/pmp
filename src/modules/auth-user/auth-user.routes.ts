@@ -21,22 +21,6 @@ router.post("/change-password",userChangeCurrentPasswordValidator(),validate,con
 router.post("/resend-email-verification",controller.resendEmailVerification);
 
 
-
-//secure routes
-// router.route("/logout").post(verifyJWT, logoutUser);
-// router.route("/current-user").post(verifyJWT, getCurrentUser);
-// router
-//   .route("/change-password")
-//   .post(
-//     verifyJWT,
-//     userChangeCurrentPasswordValidator(),
-//     validate,
-//     changeCurrentPassword,
-//   );
-// router
-//   .route("/resend-email-verification")
-//   .post(verifyJWT, resendEmailVerification);
-
 // export default router;
 
 
