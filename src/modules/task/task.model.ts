@@ -10,10 +10,10 @@ export interface IAttachment {
 export interface ITask extends Document {
   title: string;
   description?: string;
-  project: mongoose.Types.ObjectId;   // or IProject["_id"] if you have a Project interface
-  assignedTo?: mongoose.Types.ObjectId; // or IUser["_id"]
-  assignedBy?: mongoose.Types.ObjectId; // or IUser["_id"]
-  status: typeof AvailableTaskStatues[number]; // ensures it matches enum values
+  project: mongoose.Types.ObjectId;   
+  assignedTo?: mongoose.Types.ObjectId;
+  assignedBy?: mongoose.Types.ObjectId; 
+  status: typeof AvailableTaskStatues[number]; 
   attachments: IAttachment[];
   createdAt?: Date;
   updatedAt?: Date;
