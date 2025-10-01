@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import  User from "../modules/auth-user/auth-user.model";
 import { ProjectMember } from "../../src/modules/project/projectMember.model";
-import { ApiError } from "../utils/api-error.js";
-import { AsyncHandler } from "../utils/async-handler.js";
+import { ApiError } from "../utils/api-error";
+import { AsyncHandler } from "../utils/async-handler"
 import jwt, { JwtPayload } from "jsonwebtoken";
 import  {ENV}  from "../config/env";
 import mongoose from "mongoose";
