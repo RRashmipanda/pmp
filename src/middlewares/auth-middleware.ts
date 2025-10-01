@@ -1,9 +1,10 @@
 import  User from "../modules/auth-user/auth-user.model";
-// import { ProjectMember } from "../models/projectmember.models.js";
+import { ProjectMember } from "../../src/modules/project/projectMember.model";
 import { ApiError } from "../utils/api-error.js";
 import { AsyncHandler } from "../utils/async-handler.js";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import  {ENV}  from "../config/env";
+import mongoose from "mongoose";
 
 
 export interface AuthPayload extends JwtPayload {
@@ -36,34 +37,34 @@ export const verifyJWT = AsyncHandler(async (req, res, next) => {
 });
 
 
-// export const validateProjectPermission = (roles = []) => {
-//   asyncHandler(async (req, res, next) => {
-//     const { projectId } = req.params;
+export const validateProjectPermission = (roles: string[] = []) => {
+  AsyncHandler(async (req, res, next) => {
+    const { projectId } = req.params;
 
-//     if (!projectId) {
-//       throw new ApiError(400, "project id is missing");
-//     }
+    if (!projectId) {
+      throw new ApiError(400, "project id is missing");
+    }
 
-//     const project = await ProjectMember.findOne({
-//       project: new mongoose.Types.ObjectId(projectId),
-//       user: new mongoose.Types.ObjectId(req.user._id),
-//     });
+    const project = await ProjectMember.findOne({
+      project: new mongoose.Types.ObjectId(projectId),
+      user: new mongoose.Types.ObjectId(req.user._id),
+    });
 
-//     if (!project) {
-//       throw new ApiError(400, "project not found");
-//     }
+    if (!project) {
+      throw new ApiError(400, "project not found");
+    }
 
-//     const givenRole = project?.role;
+    const givenRole = project?.role;
 
-//     req.user.role = givenRole;
+    req.user.role = givenRole;
 
-//     if (!roles.includes(givenRole)) {
-//       throw new ApiError(
-//         403,
-//         "You do not have permission to perform this action",
-//       );
-//     }
+    if (!roles.includes(givenRole)) {
+      throw new ApiError(
+        403,
+        "You do not have permission to perform this action",
+      );
+    }
 
-//     next();
-//   });
-// };
+    next();
+  });
+};

@@ -1,7 +1,16 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Document, Schema } from "mongoose";
 import { AvailableUserRole, UserRolesEnum } from "../../utils/constants";
 
-const projectMemberSchema = new Schema(
+// Interface for ProjectMember
+export interface IProjectMember extends Document {
+  user: mongoose.Types.ObjectId;   
+  project: mongoose.Types.ObjectId;
+  role: typeof AvailableUserRole[number]; 
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+const projectMemberSchema = new Schema<IProjectMember>(
   {
     user: {
       type: Schema.Types.ObjectId,
@@ -22,7 +31,7 @@ const projectMemberSchema = new Schema(
   { timestamps: true },
 );
 
-export const ProjectMember = mongoose.model(
+export const ProjectMember = mongoose.model<IProjectMember>(
   "ProjectMember",
   projectMemberSchema,
 );
